@@ -1,0 +1,58 @@
+# Web2py specific files
+*.pyc
+__pycache__/
+applications/*/databases/*
+applications/*/sessions/*
+applications/*/errors/*
+applications/*/cache/*
+applications/*/uploads/*
+applications/*/private/*
+httpserver.log
+httpserver.pid
+parameters_*.py
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
