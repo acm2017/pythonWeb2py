@@ -1,0 +1,111 @@
+timestamp: 2025-08-22T20:03:03.134987
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2025-08-22T20:03:03.137498
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2025-08-22T20:03:03.139070
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2025-08-22T20:03:03.140883
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2025-08-22T20:03:03.142416
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2025-08-22T20:03:03.144092
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2025-08-22T20:03:03.145727
+CREATE TABLE "hotels"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(100),
+    "address" TEXT,
+    "phone" CHAR(20),
+    "email" CHAR(100),
+    "description" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2025-08-22T20:03:03.147463
+CREATE TABLE "rooms"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "hotel_id" INTEGER REFERENCES "hotels" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "room_number" CHAR(10),
+    "room_type" CHAR(512),
+    "capacity" INTEGER,
+    "price_per_night" DOUBLE,
+    "status" CHAR(512),
+    "description" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2025-08-22T20:03:03.149112
+CREATE TABLE "guests"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(50),
+    "last_name" CHAR(50),
+    "email" CHAR(100),
+    "phone" CHAR(20),
+    "address" TEXT,
+    "id_number" CHAR(20),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2025-08-22T20:03:03.150869
+CREATE TABLE "reservations"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "hotel_id" INTEGER REFERENCES "hotels" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "room_id" INTEGER REFERENCES "rooms" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "guest_id" INTEGER REFERENCES "guests" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "check_in_date" DATE,
+    "check_out_date" DATE,
+    "adults" INTEGER,
+    "children" INTEGER,
+    "total_amount" DOUBLE,
+    "status" CHAR(512),
+    "notes" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!

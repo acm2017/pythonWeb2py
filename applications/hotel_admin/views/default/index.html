@@ -1,0 +1,144 @@
+{{extend 'layout.html'}}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt"></i> Hotel Administration Dashboard</h1>
+    {{if not auth.is_logged_in():}}
+    <a href="{{=URL('default', 'user/login')}}" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i> Login to Manage
+    </a>
+    {{pass}}
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stats-card text-center">
+            <h3><i class="fas fa-building"></i></h3>
+            <h3>{{=total_hotels}}</h3>
+            <p>Total Hotels</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card text-center" style="background: linear-gradient(45deg, #28a745, #1e7e34);">
+            <h3><i class="fas fa-bed"></i></h3>
+            <h3>{{=total_rooms}}</h3>
+            <p>Total Rooms</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card text-center" style="background: linear-gradient(45deg, #ffc107, #e0a800);">
+            <h3><i class="fas fa-users"></i></h3>
+            <h3>{{=total_guests}}</h3>
+            <p>Total Guests</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card text-center" style="background: linear-gradient(45deg, #dc3545, #c82333);">
+            <h3><i class="fas fa-calendar-check"></i></h3>
+            <h3>{{=total_reservations}}</h3>
+            <p>Total Reservations</p>
+        </div>
+    </div>
+</div>
+
+<!-- Current Reservations -->
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-calendar-alt"></i> Current Reservations</h5>
+    </div>
+    <div class="card-body">
+        {{if current_reservations:}}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Guest</th>
+                        <th>Hotel</th>
+                        <th>Room</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        {{if auth.is_logged_in():}}
+                        <th>Actions</th>
+                        {{pass}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{for reservation in current_reservations:}}
+                    <tr>
+                        <td>{{=reservation.guests.first_name}} {{=reservation.guests.last_name}}</td>
+                        <td>{{=reservation.hotels.name}}</td>
+                        <td>{{=reservation.rooms.room_number}}</td>
+                        <td>{{=reservation.reservations.check_in_date}}</td>
+                        <td>{{=reservation.reservations.check_out_date}}</td>
+                        <td>
+                            <span class="badge bg-{{='success' if reservation.reservations.status == 'Checked In' else 'warning'}}">
+                                {{=reservation.reservations.status}}
+                            </span>
+                        </td>
+                        <td>${{=reservation.reservations.total_amount or 0}}</td>
+                        {{if auth.is_logged_in():}}
+                        <td>
+                            {{if reservation.reservations.status == 'Confirmed':}}
+                            <a href="{{=URL('default', 'check_in', args=[reservation.reservations.id])}}" 
+                               class="btn btn-sm btn-success" title="Check In">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </a>
+                            {{elif reservation.reservations.status == 'Checked In':}}
+                            <a href="{{=URL('default', 'check_out', args=[reservation.reservations.id])}}" 
+                               class="btn btn-sm btn-warning" title="Check Out">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                            {{pass}}
+                        </td>
+                        {{pass}}
+                    </tr>
+                    {{pass}}
+                </tbody>
+            </table>
+        </div>
+        {{else:}}
+        <div class="text-center text-muted">
+            <i class="fas fa-calendar-times fa-3x mb-3"></i>
+            <p>No current reservations found.</p>
+            {{if auth.is_logged_in():}}
+            <a href="{{=URL('default', 'new_reservation')}}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Reservation
+            </a>
+            {{pass}}
+        </div>
+        {{pass}}
+    </div>
+</div>
+
+<!-- Quick Actions -->
+{{if auth.is_logged_in():}}
+<div class="row mt-4">
+    <div class="col-12">
+        <h5>Quick Actions</h5>
+        <div class="row">
+            <div class="col-md-3">
+                <a href="{{=URL('default', 'hotels')}}" class="btn btn-outline-primary w-100 mb-2">
+                    <i class="fas fa-building"></i> Manage Hotels
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="{{=URL('default', 'rooms')}}" class="btn btn-outline-success w-100 mb-2">
+                    <i class="fas fa-bed"></i> Manage Rooms
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="{{=URL('default', 'guests')}}" class="btn btn-outline-warning w-100 mb-2">
+                    <i class="fas fa-users"></i> Manage Guests
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="{{=URL('default', 'new_reservation')}}" class="btn btn-outline-danger w-100 mb-2">
+                    <i class="fas fa-plus"></i> New Reservation
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{{pass}}
