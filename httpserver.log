@@ -1,0 +1,9 @@
+127.0.0.1, 2025-08-22 20:03:03, GET, /hotel_admin/default/index, HTTP/1.1, 200, 0.117785
+127.0.0.1, 2025-08-22 20:03:18, GET, /hotel_admin/default/user/login, HTTP/1.1, 404, 0.008453
+127.0.0.1, 2025-08-22 20:03:32, GET, /hotel_admin/default/user/login, HTTP/1.1, 200, 0.009596
+127.0.0.1, 2025-08-22 20:03:37, GET, /hotel_admin/default/user/register, HTTP/1.1, 200, 0.009407
+127.0.0.1, 2025-08-22 20:04:02, POST, /hotel_admin/default/user/register, HTTP/1.1, 303, 0.013403
+127.0.0.1, 2025-08-22 20:04:02, GET, /hotel_admin/default/index, HTTP/1.1, 200, 0.008462
+127.0.0.1, 2025-08-22 20:04:12, GET, /hotel_admin/default/hotels, HTTP/1.1, 200, 0.014246
+127.0.0.1, 2025-08-22 20:04:22, GET, /hotel_admin/default/hotels/new/hotels, HTTP/1.1, 200, 0.008789
+127.0.0.1, 2025-08-22 20:04:30, GET, /hotel_admin/default/reservations, HTTP/1.1, 200, 0.021286
